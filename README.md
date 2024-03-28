@@ -9,7 +9,9 @@ Welcome to this portfolio practice project where I have taken a look at a call c
 Firstly the data and checked and cleaned using Google sheets. The only issues found with the data was that csat scores weren’t given for each call and there was a lot of missing demographic information potentially due to customers ringing from private or withheld numbers. However this is still important to take into consideration. The next slides then show some of the analysis that I did using SQL.
 
 # Findings
-. Do we have certain agents who respond to calls in a timely matter? As we can see from the data 75.3% of the calls were responded to in a timely matter.
+. Do we have certain agents who respond to calls in a timely matter? 
+
+As we can see from the data 75.3% of the calls were responded to in a timely matter.
 
 ```
 SELECT agent_id,
@@ -23,16 +25,42 @@ ORDER BY Above_SLA DESC
 LIMIT 10;
 ```
 
-. Are any agents having poor response time? In order to see which agents responded in a timely matter and which had a poor response time, i’ve showed the top 10 agents with the most responses above SLA and the top 10 with responses below SLA.
+![SLA Pie Chart](https://github.com/jwilsh/Call_Center_Project/assets/98908958/52527527-db72-4360-aa4a-3d6bfb5cde12)
+
+
+. Are any agents having poor response time? 
+
+In order to see which agents responded in a timely matter and which had a poor response time, i’ve showed the top 10 agents with the most responses above SLA and the top 10 with responses below SLA.
+
+![Top 10 SLA](https://github.com/jwilsh/Call_Center_Project/assets/98908958/5bc5bb01-3111-4d14-b764-31728b01e2ac)
+
+![Top 10 Below SLA](https://github.com/jwilsh/Call_Center_Project/assets/98908958/e422ee40-c461-4ab1-af20-4825507b7c0e)
+
+
+. What about customer ratings towards them? 
+
+As you can see from the tables there isn’t much difference in CSat score between the highest ranked and lowest ranked agents according to their customer response times.
 
 
 
-. What about customer ratings towards them? As you can see from the tables there isn’t much difference in CSat score between the highest ranked and lowest ranked agents according to their customer response times.
+. Where are our most loyal customers located? 
+
+Unfortunately there is a lot of missing data related to the location of the customers calls. However from what data we have we can see the top 10 ranked states and cities. California has been broken down to show the top 10 cities within the state.
+
+```
+SELECT city, state, COUNT(*) AS count
+FROM customer
+GROUP BY city, state
+ORDER BY count DESC
+LIMIT 10;
+```
 
 
+![Top 10 Cities](https://github.com/jwilsh/Call_Center_Project/assets/98908958/a6956ed0-825d-4a21-95ce-c028d6f703e5)
 
-. Where are our most loyal customers located? Unfortunately there is a lot of missing data related to the location of the customers calls. However from what data we have we can see the top 10 ranked states and cities. California has been broken down to show the top 10 cities within the state.
+![Top 10 States](https://github.com/jwilsh/Call_Center_Project/assets/98908958/fa2ad873-4445-414b-acea-0006c1a3283c)
 
+![Pie Chart California](https://github.com/jwilsh/Call_Center_Project/assets/98908958/a6d331dd-2de7-4e4e-8355-29dc0a6f1c1d)
 
 
 . Are there certain call centers that perform well? Not well? Are there certain channels that perform well? Not well? As you can see from the table there isn’t much different in terms of Csat score between all of the different call centers.
