@@ -63,15 +63,61 @@ LIMIT 10;
 ![Pie Chart California](https://github.com/jwilsh/Call_Center_Project/assets/98908958/a6d331dd-2de7-4e4e-8355-29dc0a6f1c1d)
 
 
-. Are there certain call centers that perform well? Not well? Are there certain channels that perform well? Not well? As you can see from the table there isn’t much different in terms of Csat score between all of the different call centers.
+. Are there certain call centers that perform well? Not well? Are there certain channels that perform well? Not well? 
+
+As you can see from the table there isn’t much different in terms of Csat score between all of the different call centers.
 
 
+![Average CSAT](https://github.com/jwilsh/Call_Center_Project/assets/98908958/1936a60d-798e-43ae-acc5-b0c3c435b99c)
 
 
 . How do our customers feel about our service? You can also see that when you break down the SLA times of each call center by % there are all this very similar. Even when we break down each call center by sentiment we can see that this is almost identical. Lastly if we go back to the Top 10 agents earlier based on SLA responses we can see that just because an agent has a good response time doesn’t necessarily mean that the customer is satisfied with their service.
 
 
+```
+SELECT call_center,
+  COUNT(*) AS Total_calls,
+  ROUND((SUM(CASE WHEN response_time = 'Above SLA' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS '% Above_SLA',
+  ROUND((SUM(CASE WHEN response_time = 'Within SLA' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS '% Within_SLA',
+  ROUND((SUM(CASE WHEN response_time = 'Below SLA' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS '% Below_SLA',
+  ROUND(AVG(CASE WHEN csat_score IS NOT NULL AND csat_score <> '' THEN csat_score ELSE NULL END), 2) AS average_csat_score
+FROM call_data
+GROUP BY call_center
+ORDER BY '% Above SLA' DESC
+```
 
+```
+SELECT agent_id,
+  ROUND((SUM(CASE WHEN sentiment = 'Very Positive' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS 'Very Positive %',
+  ROUND((SUM(CASE WHEN sentiment = 'Positive' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS 'Positive %',
+  ROUND((SUM(CASE WHEN sentiment = 'Neutral' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS 'Neutral %',
+  ROUND((SUM(CASE WHEN sentiment = 'Negative' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS 'Negative %',
+  ROUND((SUM(CASE WHEN sentiment = 'Very Negative' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS 'Very Negative %',
+  ROUND(AVG(CASE WHEN csat_score IS NOT NULL AND csat_score <> '' THEN csat_score ELSE NULL END), 2) AS average_csat_score
+FROM call_data
+GROUP BY agent_id
+ORDER BY 'Very Positive %' DESC
+LIMIT 10;
+```
+
+```
+SELECT call_center,
+  COUNT(*) AS Total_calls,
+  ROUND((SUM(CASE WHEN sentiment = 'Very Positive' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS 'Very Positive %',
+  ROUND((SUM(CASE WHEN sentiment = 'Positive' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS 'Positive %',
+  ROUND((SUM(CASE WHEN sentiment = 'Neutral' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS 'Neutral %',
+  ROUND((SUM(CASE WHEN sentiment = 'Negative' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS 'Negative %',
+  ROUND((SUM(CASE WHEN sentiment = 'Very Negative' THEN 1 ELSE 0 END) / COUNT(*)), 3) * 100 AS 'Very Negative %',
+  ROUND(AVG(CASE WHEN csat_score IS NOT NULL AND csat_score <> '' THEN csat_score ELSE NULL END), 2) AS average_csat_score
+FROM call_data
+GROUP BY call_center
+```
+
+![Call Center SLA](https://github.com/jwilsh/Call_Center_Project/assets/98908958/e13cf987-8a7e-4ff3-b3fb-4ae3e7ccc5d9)
+
+![Call center sentiment](https://github.com/jwilsh/Call_Center_Project/assets/98908958/720786a4-9cdf-47dc-8520-2a667838b5b4)
+
+![Agent sentiment](https://github.com/jwilsh/Call_Center_Project/assets/98908958/459fd7e6-91b3-4f61-8d35-ea60354b52a8)
 
 
 # Key Findings
