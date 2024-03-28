@@ -11,7 +11,7 @@ Firstly the data and checked and cleaned using Google sheets. The only issues fo
 # Findings
 . Do we have certain agents who respond to calls in a timely matter? As we can see from the data 75.3% of the calls were responded to in a timely matter.
 
-'''
+```
 SELECT agent_id,
   SUM(CASE WHEN response_time = 'Above SLA' THEN 1 ELSE 0 END) AS Above_SLA,
   SUM(CASE WHEN response_time = 'Within SLA' THEN 1 ELSE 0 END) AS Within_SLA,
@@ -21,7 +21,7 @@ FROM call_data
 GROUP BY agent_id
 ORDER BY Above_SLA DESC
 LIMIT 10;
-'''
+```
 
 . Are any agents having poor response time? In order to see which agents responded in a timely matter and which had a poor response time, i’ve showed the top 10 agents with the most responses above SLA and the top 10 with responses below SLA.
 
